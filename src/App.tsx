@@ -1,11 +1,17 @@
 import './App.css'
-import { Button } from './components/ui/button'
+import Header from './components/shared/header'
+import Overview from './components/shared/overview'
+import Table from './components/shared/table'
 
 function App() {
   return (
-    <div>
-      <Button> hello</Button>
-    </div>
+    <main className='bg-[#212124]'>
+      <Header/>
+      <div className='p-4 flex flex-col gap-4'>
+        <Overview/>
+        <Table/>
+      </div>
+    </main>
   )
 }
 
