@@ -1,5 +1,5 @@
 import { Button } from "../ui/button";
-import { Wallet } from 'lucide-react';
+import { Wallet } from "lucide-react";
 
 export default function Header() {
   return (
@@ -10,8 +10,9 @@ export default function Header() {
       </div>
 
       <Button className="bg-[#A9E851] rounded-2xl">
-        <Wallet/>
-        Connect Wallet</Button>
+        <Wallet />
+        Connect Wallet
+      </Button>
     </div>
   );
 }

@@ -1,59 +1,48 @@
-import type { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "../ui/dataTable";
+import { Button } from "../ui/button";
+import { Star } from "lucide-react";
+import { RefreshCw } from "lucide-react";
+import { Plus } from "lucide-react";
 
-type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "../../components/ui/dialog";
+import SearchCard from "./searchCard";
+import { columns, type TokenI } from "../../constants/constant";
 
-export const payments: Payment[] = [
-  {
-    id: "728ed52f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-  {
-    id: "489e1d42",
-    amount: 125,
-    status: "processing",
-    email: "example@gmail.com",
-  },
-  // ...
-];
 
-const data = [
-  {
-    id: "728ed52f",
-    amount: 100,
-    status: "pending",
-    email: "m@example.com",
-  },
-];
-
-export const columns: ColumnDef<Payment>[] = [
-  {
-    accessorKey: "status",
-    header: "Status",
-  },
-  {
-    accessorKey: "email",
-    header: "Email",
-  },
-  {
-    accessorKey: "amount",
-    header: "Amount",
-  },
-];
-
-export default function Table() {
+export default function Table({data}: {data: TokenI[]}) {
+  console.log("DATA --------", data)
   return (
     <div>
-      <div className="bg-[#27272A] p-4 rounded-2xl">
-        <DataTable columns={columns} data={data} />
+      <div className="flex justify-between items-center gap-4 mb-4">
+        <div className="flex items-center gap-2">
+          <Star className="text-[#A9E851]" />
+          <span className="text-xl">Watchlist</span>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <Button className="bg-[#A9E851] rounded-xl">
+            <RefreshCw />
+            Refresh Prices
+          </Button>
+
+          <Dialog>
+            <DialogTrigger>
+              <Button className="bg-[#A9E851]">
+                <Plus />
+                Add Token
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="rounded-2xl">
+              <SearchCard />
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
+      <DataTable columns={columns} data={data} />
     </div>
   );
 }
