@@ -9,9 +9,10 @@ import {
 import { Button } from "../components/ui/button";
 import { SquarePen } from "lucide-react";
 import { Trash } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
-import { editToken } from "../redux/slices/token-slice";
+import { useDispatch } from "react-redux";
+import { editToken, removeToken } from "../redux/slices/token-slice";
 import { Input } from "../components/ui/input";
+import React from "react";
 
 export interface TokenI {
   id: string;
@@ -72,7 +73,6 @@ export const columns: ColumnDef<TokenI>[] = [
     size: 200,
     header: "Sparkline (7d)",
     cell: ({ row }) => {
-      // Convert CoinGecko array of numbers into Recharts-friendly format
       const sparklineArray =
         row.original.market_data?.sparkline_7d?.price ?? [];
       const sparklineData = sparklineArray.map((p: number, i: number) => ({
@@ -80,18 +80,10 @@ export const columns: ColumnDef<TokenI>[] = [
         price: p,
       }));
 
-      console.log(sparklineData);
-
       return (
         <div className="w-8 h-8">
           <LineChart data={sparklineData} width={100} height={50}>
-            <Line
-              type="monotone"
-              dataKey="price"
-              // stroke="var(--chart-1)"
-              strokeWidth={2}
-              dot={false}
-            />
+            <Line type="monotone" dataKey="price" strokeWidth={2} dot={false} />
           </LineChart>
         </div>
       );
@@ -105,15 +97,39 @@ export const columns: ColumnDef<TokenI>[] = [
       const holdings = row.original.holdings ?? 0;
       const isEditing = row.original.isEditing ?? false;
       const dispatch = useDispatch();
+      const [newHoldings, setNewHoldings] = React.useState(holdings);
+
       return isEditing ? (
         <div className="flex gap-2 items-center">
-          <Input value="3" className="w-fit"></Input>
-          <Button onClick={() => dispatch(editToken(row.original.id))}>
+          <Input
+            type="number"
+            value={newHoldings}
+            onChange={(e) => setNewHoldings(Number(e.target.value))}
+            className="p-2"
+          />
+          <Button
+            onClick={() =>
+              dispatch(
+                editToken({
+                  id: row.original.id,
+                  field: "holdings",
+                  value: newHoldings,
+                })
+              ) &&
+              dispatch(
+                editToken({
+                  id: row.original.id,
+                  field: "isEditing",
+                  value: false,
+                })
+              )
+            }
+          >
             Save
           </Button>
         </div>
       ) : (
-        <div>{holdings.toFixed(4)}</div>
+        <div>{holdings}</div>
       );
     },
   },
@@ -125,7 +141,7 @@ export const columns: ColumnDef<TokenI>[] = [
       const holdings = row.original.holdings ?? 0;
       const price = row.original.market_data?.current_price?.usd ?? 0;
       const value = holdings * price;
-      return <div>${value.toLocaleString()}</div>;
+      return <div>${value && value.toFixed(2)}</div>;
     },
   },
   {
@@ -147,7 +163,15 @@ export const columns: ColumnDef<TokenI>[] = [
             <Button
               variant="ghost"
               className="border cursor-pointer justify-start"
-              onClick={() => dispatch(editToken(row.original.id))}
+              onClick={() =>
+                dispatch(
+                  editToken({
+                    id: row.original.id,
+                    field: "isEditing",
+                    value: true,
+                  })
+                )
+              }
             >
               <SquarePen />
               Edit Holdings
@@ -155,6 +179,7 @@ export const columns: ColumnDef<TokenI>[] = [
             <Button
               variant="ghost"
               className="text-red-400 border cursor-pointer justify-start hover:text-red-400"
+              onClick={() => dispatch(removeToken(row.original.id))}
             >
               <Trash />
               Remove

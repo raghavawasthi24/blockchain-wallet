@@ -12,9 +12,7 @@ import {
 import SearchCard from "./searchCard";
 import { columns, type TokenI } from "../../constants/constant";
 
-
-export default function Table({data}: {data: TokenI[]}) {
-  console.log("DATA --------", data)
+export default function Table({ data }: { data: TokenI[] }) {
   return (
     <div>
       <div className="flex justify-between items-center gap-4 mb-4">
@@ -42,7 +40,7 @@ export default function Table({data}: {data: TokenI[]}) {
           </Dialog>
         </div>
       </div>
-      <DataTable columns={columns} data={data}/>
+      <DataTable columns={columns} data={data} />
     </div>
   );
 }

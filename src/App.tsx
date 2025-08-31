@@ -3,14 +3,9 @@ import "./App.css";
 import Header from "./components/shared/header";
 import Overview from "./components/shared/overview";
 import Table from "./components/shared/table";
-import { useEffect } from "react";
 
 function App() {
   const data = useSelector((state: any) => state.token);
-
-  useEffect(()=> {
-    console.log(data)
-  }, [data])
 
   return (
     <main className="bg-[#212124]">
