@@ -42,7 +42,7 @@ export default function Table({data}: {data: TokenI[]}) {
           </Dialog>
         </div>
       </div>
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={data}/>
     </div>
   );
 }

@@ -24,19 +24,16 @@ export const searchToken = async (query: string) => {
   if (!query.trim()) return null; // avoid empty requests
 
   try {
-    const res = await axios.get(
-      "https://api.coingecko.com/api/v3/search",
-      {
-        headers: {
-          accept: "application/json",
-          // If you have a CoinGecko Pro key, uncomment the next line:
-          // "x-cg-pro-api-key": process.env.COINGECKO_API_KEY,
-        },
-        params: {
-          query, // 🔹 required by CoinGecko
-        },
-      }
-    );
+    const res = await axios.get("https://api.coingecko.com/api/v3/search", {
+      headers: {
+        accept: "application/json",
+        // If you have a CoinGecko Pro key, uncomment the next line:
+        // "x-cg-pro-api-key": process.env.COINGECKO_API_KEY,
+      },
+      params: {
+        query, // 🔹 required by CoinGecko
+      },
+    });
 
     return res.data; // { coins: [...], exchanges: [...], ... }
   } catch (error: any) {
@@ -45,18 +42,22 @@ export const searchToken = async (query: string) => {
   }
 };
 
-
 export const getTokenData = async (id: string) => {
   if (!id.trim()) return null; // avoid empty requests
 
   try {
     const res = await axios.get(
-      `https://api.coingecko.com/api/v3/coins/${id}`,
+      `https://api.coingecko.com/api/v3/coins/${id}?localization=false
+  &tickers=false
+  &market_data=true
+  &community_data=false
+  &developer_data=false
+  &sparkline=true`,
       {
         headers: {
           accept: "application/json",
-          'x-cg-demo-api-key': 'CG-sxmGPNBMkG9iquoib5edwAB7'
-        }
+          "x-cg-demo-api-key": "CG-sxmGPNBMkG9iquoib5edwAB7",
+        },
       }
     );
 
