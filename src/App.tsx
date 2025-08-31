@@ -11,7 +11,7 @@ function App() {
     <main className="bg-[#212124]">
       <Header />
       <div className="p-4 flex flex-col gap-16">
-        <Overview />
+        <Overview data={data}/>
         <Table data={data} />
       </div>
     </main>

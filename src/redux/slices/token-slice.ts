@@ -36,14 +36,16 @@ const tokenSlice = createSlice({
       const token = state.find((t) => t.id === action.payload.id);
       if (token) {
         (token[action.payload.field] as any) = action.payload.value;
+        token.value =
+          (token.holdings ?? 0) * (token.market_data?.current_price?.usd ?? 0);
         saveToLocalStorage(state);
       }
     },
-   removeToken: (state, action: PayloadAction<string>) => {
-  const newState = state.filter(t => t.id !== action.payload);
-  localStorage.setItem("tokens", JSON.stringify(newState));
-  return newState;
-},
+    removeToken: (state, action: PayloadAction<string>) => {
+      const newState = state.filter((t) => t.id !== action.payload);
+      localStorage.setItem("tokens", JSON.stringify(newState));
+      return newState;
+    },
   },
 });
 

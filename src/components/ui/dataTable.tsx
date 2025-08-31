@@ -5,6 +5,7 @@ import {
   getCoreRowModel,
   getPaginationRowModel,
   useReactTable,
+  type ColumnDef,
 } from "@tanstack/react-table";
 
 import {
@@ -18,15 +19,15 @@ import {
 
 import { Button } from "./button";
 
-interface DataTableProps<TData, TValue> {
-  columns: any;
+interface DataTableProps<TData> {
+  columns: ColumnDef<TData, any>[];
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData>({
   columns,
   data,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData>) {
   const table = useReactTable({
     data,
     columns,
@@ -100,18 +101,19 @@ export function DataTable<TData, TValue>({
           })()}
         </div>
 
-        <div className="flex w-full items-center gap-8 lg:w-fit">
+        <div className="flex w-fit items-center gap-4 sm:gap-8">
           <div className="flex w-fit items-center justify-center text-sm font-medium">
             {table.getPageCount() == 0
               ? 0
               : table.getState().pagination.pageIndex + 1}{" "}
             of {table.getPageCount()} pages
           </div>
-          <div className="ml-auto flex items-center lg:ml-0">
+          <div className="flex gap-2 items-center">
             <Button
               variant="ghost"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
+              className="p-0"
             >
               Prev
             </Button>
@@ -119,6 +121,7 @@ export function DataTable<TData, TValue>({
               variant="ghost"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
+              className="p-0"
             >
               Next
             </Button>

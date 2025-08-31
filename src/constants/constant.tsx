@@ -12,7 +12,7 @@ import { Trash } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { editToken, removeToken } from "../redux/slices/token-slice";
 import { Input } from "../components/ui/input";
-import React from "react";
+import React, { useState } from "react";
 
 export interface TokenI {
   id: string;
@@ -25,6 +25,7 @@ export interface TokenI {
     sparkline_7d?: { price: number[] };
   };
   holdings: number;
+  value: number;
   isEditing: boolean;
 }
 
@@ -105,9 +106,10 @@ export const columns: ColumnDef<TokenI>[] = [
             type="number"
             value={newHoldings}
             onChange={(e) => setNewHoldings(Number(e.target.value))}
-            className="p-2"
+            className="p-2 border-[#A9E851]"
           />
           <Button
+            className="bg-[#A9E851]"
             onClick={() =>
               dispatch(
                 editToken({
@@ -138,10 +140,8 @@ export const columns: ColumnDef<TokenI>[] = [
     header: "Value",
     size: 100,
     cell: ({ row }) => {
-      const holdings = row.original.holdings ?? 0;
-      const price = row.original.market_data?.current_price?.usd ?? 0;
-      const value = holdings * price;
-      return <div>${value && value.toFixed(2)}</div>;
+      const value = row.original.value;
+      return <div>${(value && value.toFixed(2)) || 0}</div>;
     },
   },
   {
@@ -150,8 +150,9 @@ export const columns: ColumnDef<TokenI>[] = [
     size: 50,
     cell: ({ row }) => {
       const dispatch = useDispatch();
+      const [open, setOpen] = useState(false);
       return (
-        <Popover>
+        <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger>
             {" "}
             <Ellipsis />
@@ -159,6 +160,7 @@ export const columns: ColumnDef<TokenI>[] = [
           <PopoverContent
             side="left"
             className="p-0 flex flex-col w-40 bg-[#27272A]"
+            onClick={() => setOpen(false)}
           >
             <Button
               variant="ghost"
@@ -189,4 +191,17 @@ export const columns: ColumnDef<TokenI>[] = [
       );
     },
   },
+];
+
+export const COLORS = [
+  "#0088FE", // blue
+  "#00C49F", // teal
+  "#FFBB28", // yellow
+  "#FF8042", // orange
+  "#829ad6ff", // deep blue
+  "#ba6bebff", // purple
+  "#e46fadff", // pink
+  "#32CD32", // lime green
+  "#bc7f53ff", // brown
+  "#d5677dff", // crimson
 ];

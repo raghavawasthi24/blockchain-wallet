@@ -18,7 +18,7 @@ type Token = {
   thumb: string;
 };
 
-export default function SearchCard() {
+export default function SearchCard({setDialogOpen}: any) {
   const [tokens, setTokens] = useState<Token[]>([]);
   const [trendingTokens, setTrendingTokens] = useState<Token[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
@@ -27,7 +27,6 @@ export default function SearchCard() {
 
   const dispatch = useDispatch();
 
-  // 🔹 Fetch trending tokens
   const fetchTrending = async () => {
     if (trendingTokens.length > 0) {
       setTokens(trendingTokens);
@@ -53,10 +52,9 @@ export default function SearchCard() {
     }
   };
 
-  // 🔹 Search coins
   const searchCoin = async (q: string) => {
     if (!q.trim()) {
-      fetchTrending(); // fallback to trending
+      fetchTrending();
       return;
     }
 
@@ -79,16 +77,14 @@ export default function SearchCard() {
     }
   };
 
-  // 🔹 Debounce query input
   useEffect(() => {
     const handler = setTimeout(() => {
       searchCoin(query);
-    }, 500); // debounce 500ms
+    }, 500);
 
-    return () => clearTimeout(handler); // cleanup old timer
+    return () => clearTimeout(handler);
   }, [query]);
 
-  // Initial load → trending
   useEffect(() => {
     fetchTrending();
   }, []);
@@ -108,10 +104,9 @@ export default function SearchCard() {
         })
       );
 
-      console.log("Fetched token data:", results);
-
       dispatch(addToken(results));
-      return results; // or update state
+      setDialogOpen(false)
+      return results;
     } catch (err) {
       console.error("Error fetching token data:", err);
     }

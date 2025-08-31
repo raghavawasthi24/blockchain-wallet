@@ -27,8 +27,6 @@ export const searchToken = async (query: string) => {
     const res = await axios.get("https://api.coingecko.com/api/v3/search", {
       headers: {
         accept: "application/json",
-        // If you have a CoinGecko Pro key, uncomment the next line:
-        // "x-cg-pro-api-key": process.env.COINGECKO_API_KEY,
       },
       params: {
         query, // 🔹 required by CoinGecko
