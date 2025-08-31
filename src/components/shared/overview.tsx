@@ -8,10 +8,12 @@ export default function Overview({ data }: { data: TokenI[] }) {
     value: (t.holdings ?? 0) * (t.market_data?.current_price?.usd ?? 0),
   }));
 
+  // finding top 10 coins with highest value
   const newData = [...tokensWithValue]
     .sort((a, b) => b.value - a.value)
     .slice(0, 10);
 
+  //calculating portfolio value
   const totalPortfolioValue = data.reduce((sum, t) => sum + (t.value || 0), 0);
 
   return (

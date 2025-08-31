@@ -1,5 +1,3 @@
-"use client";
-
 import "@rainbow-me/rainbowkit/styles.css";
 import {
   getDefaultConfig,
@@ -12,8 +10,8 @@ import { mainnet, polygon, arbitrum } from "wagmi/chains";
 
 const config = getDefaultConfig({
   appName: "Token Portfolio",
-  projectId: "Ye7bb4f2b929198539667374380bb3061", // get from https://cloud.walletconnect.com/
-  chains: [mainnet, polygon, arbitrum], // choose your chains
+  projectId: "Ye7bb4f2b929198539667374380bb3061", 
+  chains: [mainnet, polygon, arbitrum],
 });
 
 const queryClient = new QueryClient();
